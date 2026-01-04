@@ -4,21 +4,53 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Surprise for Joan!</title>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
-        body { background-color: #fff0f5; text-align: center; font-family: sans-serif; margin: 0; display: flex; flex-direction: column; justify-content: center; height: 100vh; overflow: hidden; }
-        #gift-box { font-size: 120px; cursor: pointer; transition: transform 0.2s; }
-        #gift-box:hover { transform: scale(1.1); }
+        /* The main pink background */
+        body { 
+            background-color: #FFC0CB; 
+            text-align: center; 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            margin: 0; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: center; 
+            height: 100vh; 
+            overflow: hidden; 
+        }
+        
+        /* Gift box animation */
+        @keyframes wiggle {
+            0% { transform: rotate(0deg) scale(1); }
+            25% { transform: rotate(3deg) scale(1.05); }
+            50% { transform: rotate(0deg) scale(1); }
+            75% { transform: rotate(-3deg) scale(1.05); }
+            100% { transform: rotate(0deg) scale(1); }
+        }
+
+        #gift-box { 
+            font-size: 140px; 
+            cursor: pointer; 
+            display: inline-block;
+            animation: wiggle 1.2s infinite ease-in-out; 
+            filter: drop-shadow(0 15px 20px rgba(0,0,0,0.15));
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
         #video-container { display: none; width: 100%; height: 100%; background: black; }
-        video { width: 100%; height: 100%; }
-        #loading-text { display: none; color: #d63384; font-weight: bold; margin-top: 10px; }
+        video { width: 100%; height: 100%; object-fit: contain; }
+        
+        #loading-text { display: none; color: #b01e5a; font-weight: bold; margin-top: 25px; font-size: 1.3rem; }
+        h2 { color: #b01e5a; margin-bottom: 20px; text-shadow: 1px 1px 2px rgba(255,255,255,0.5); }
     </style>
 </head>
 <body>
 
     <div id="opener">
-        <h2 style="color: #d63384;">Tap to open your treat!</h2>
+        <h2>Joan, tap the gift for a surprise!</h2>
         <div id="gift-box" onclick="startSurprise()">🎁</div>
-        <div id="loading-text">Preparing your surprise... 🍦</div>
+        <div id="loading-text">Opening your treat... ✨</div>
     </div>
 
     <div id="video-container">
@@ -33,16 +65,26 @@
             const loader = document.getElementById('loading-text');
             const gift = document.getElementById('gift-box');
             
-            loader.style.display = 'block';
-            gift.style.opacity = '0.5';
+            // Fire Pink and Gold Confetti
+            confetti({
+                particleCount: 180,
+                spread: 80,
+                origin: { y: 0.6 },
+                colors: ['#FF1493', '#FF69B4', '#FFB6C1', '#FFD700']
+            });
 
-            // Pre-load the video
+            loader.style.display = 'block';
+            gift.style.animation = 'none'; 
+            gift.style.opacity = '0.4';
+
             video.load();
             
             video.oncanplaythrough = function() {
-                document.getElementById('opener').style.display = 'none';
-                document.getElementById('video-container').style.display = 'block';
-                video.play();
+                setTimeout(() => {
+                    document.getElementById('opener').style.display = 'none';
+                    document.getElementById('video-container').style.display = 'block';
+                    video.play();
+                }, 800);
             };
         }
     </script>
