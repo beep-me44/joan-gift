@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Surprise for Joan!</title>
+    <style>
+        body { background-color: #fff0f5; text-align: center; font-family: sans-serif; margin: 0; display: flex; flex-direction: column; justify-content: center; height: 100vh; overflow: hidden; }
+        #gift-box { font-size: 120px; cursor: pointer; transition: transform 0.2s; }
+        #gift-box:hover { transform: scale(1.1); }
+        #video-container { display: none; width: 100%; height: 100%; background: black; }
+        video { width: 100%; height: 100%; }
+        #loading-text { display: none; color: #d63384; font-weight: bold; margin-top: 10px; }
+    </style>
+</head>
+<body>
+
+    <div id="opener">
+        <h2 style="color: #d63384;">Tap to open your treat!</h2>
+        <div id="gift-box" onclick="startSurprise()">🎁</div>
+        <div id="loading-text">Preparing your surprise... 🍦</div>
+    </div>
+
+    <div id="video-container">
+        <video id="bdayVideo" playsinline>
+            <source src="birthday.mp4" type="video/mp4">
+        </video>
+    </div>
+
+    <script>
+        function startSurprise() {
+            const video = document.getElementById('bdayVideo');
+            const loader = document.getElementById('loading-text');
+            const gift = document.getElementById('gift-box');
+            
+            loader.style.display = 'block';
+            gift.style.opacity = '0.5';
+
+            // Pre-load the video
+            video.load();
+            
+            video.oncanplaythrough = function() {
+                document.getElementById('opener').style.display = 'none';
+                document.getElementById('video-container').style.display = 'block';
+                video.play();
+            };
+        }
+    </script>
+</body>
+</html>
